@@ -6,7 +6,7 @@ public class TnodoTransicao {
 	
 	public TnodoTransicao() {}
 	public TnodoTransicao(TinfoTransicao item) {
-		this.item =  new TinfoTransicao(item.doEstado,item.paraEstado,item.comSimbolo,item.lendoPilha,item.inserindoPilha);
+		this.item =  new TinfoTransicao(item.getDe(),item.getPara(),item.getComSimbolo(),item.getLendoPilha(),item.getInserindoPilha());
 		this.proximo=null;
 		
 	}

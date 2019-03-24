@@ -1,36 +1,44 @@
 package listaEstados;
-
-
-public class Tlista {
-	public Tnodo primeiro;
-	public Tnodo ultimo;
+import pilha.*;
+import transicao.*;
+public class Tlista extends TlistaTransicao {
+	protected Tnodo primeiro;
+	protected Tnodo ultimo;
+	protected TPilha pilha =  new TPilha();
+	
 	public Tlista() {
 		Cria();
 		
 	}
-	private void Cria() { 
-		Tinfo item = new Tinfo("",0);
+	public void Cria() { 
+		Tinfo item = new Tinfo("",0,false,false);
 		this.primeiro =  new Tnodo(item);
 		this.ultimo = this.primeiro;
 		
 		
 	}
 	
-	public void criaEstado() {
-		Tinfo aux = new Tinfo();
+	public void criaEstado(Tinfo item) {
+		
 		if(isVazia()) {
-			aux.id=0;
-			aux.nome="q0";			
-		}else {	
+			item.id=0;
+			item.nome="q0";
+			
+		}else{	
+			Tnodo pesquisa = verificaEstadoInicial();
 			int idAnterior =  this.ultimo.item.id;
 			idAnterior++;
 			String id =  Integer.toString(idAnterior);
-			aux.nome="q"+id;
-			aux.id= idAnterior; // novo id, o qual acresceu +1 no id anterior
+			item.nome="q"+id;
+			item.id= idAnterior; // novo id, o qual acresceu +1 no id anterior
+			
+			if(pesquisa.item.inicial==item.inicial)
+				pesquisa.item.inicial=false;
 			
 		}
-		insereFim(aux);
+		insereFim(item);System.out.println(item.inicial);
 	}
+	
 	public void insereInicio(Tinfo item) {
 		Tnodo aux =  this.primeiro.proximo;
 		Tnodo novo =  new Tnodo(item);
@@ -43,13 +51,11 @@ public class Tlista {
 	
 	public void insereFim(Tinfo item) {
 		Tnodo novo =  new Tnodo(item);
-		
 		novo.proximo =  this.ultimo.proximo;
 		this.ultimo.proximo=novo;
 		this.ultimo = novo;	
 	}
 	public void removeInicio(){
-		
 		if(isVazia())
 			msgVazia();
 		else {
@@ -59,16 +65,57 @@ public class Tlista {
 			if(this.primeiro.proximo==null)
 				this.ultimo=this.primeiro;
 		}
-		
-
-		
 	}
-	public void pesquisaRemove(Tinfo item) {
+	
+//	public boolean verificaPalavra(String p) {
+//		String [] palavra =  new String[p.length()];
+//		Tnodo estado = verificaEstadoInicial();
+//		if(estado!=null) {
+//			for(int i=0;i<palavra.length;i++){
+//				if() {
+//					
+//				}
+//				
+//				
+//				
+//			}
+//			
+//			
+//			return true;
+//		}
+//		else 
+//			System.out.println("Nao existe um estado inicial!");
+//			
+//		return false;
+//	}
+	public Tnodo verificaEstadoInicial() {
+		Tnodo aux =  this.primeiro.proximo;
+		while(aux!=null) {
+			if(aux.item.inicial==true)
+				break;
+			aux = aux.proximo;
+		}
+		return aux;
+	}
+
+	public Tnodo pesquisaElementoById(int id) {
+		Tnodo aux =  this.primeiro.proximo;
+		
+		if(isVazia()) 
+			msgVazia();	
+		else 
+			while(aux!=null)
+				if(aux.item.id==id)
+					break;
+		return aux;
+	}
+	
+	public void pesquisaRemoveEstados(Tinfo item) {
 		Tnodo p1 =  this.primeiro;
 		Tnodo p2 =  p1.proximo;
 		
 		if(isVazia())
-			System.out.println("Não há estados para serem eliminados!");
+			msgVazia();
 		else {
 			while(p2!=null) {
 				if(p2.item.id ==  item.id){
@@ -88,22 +135,54 @@ public class Tlista {
 	public boolean isVazia() {
 		return this.primeiro==this.ultimo?true:false;
 	}
-	protected void msgVazia() {
+	@Override
+	public void msgVazia() {
 		System.out.println("Lista vazia");
 	}
 	
-	public void imprime() {
+	public void imprimeEstados() {
 		if(isVazia())
 			msgVazia();
 		else {
 			Tnodo aux = this.primeiro.proximo;
 			while(aux!=null) {
 				System.out.println(aux.item.toString());
-				System.out.println("________________________");
+				System.out.println("\t________________________");
 				aux=aux.proximo;
 			}
 		}
 		
 		
 	}
+	
+	public void insereTransicao(TinfoTransicao transicao) {
+		Tnodo aux = pesquisaElementoById(transicao.getDe());
+		if(aux!=null) {
+			
+			if(transicao.getLendoPilha().equals(this.pilha.Topo())) 
+				this.pilha.pop();
+			
+			if(!transicao.getInserindoPilha().equals(""))
+				this.pilha.push(transicao.getComSimbolo());
+			
+			aux.item.transicoes.insereFim(transicao);
+			System.out.println(this.pilha.Topo());
+		}
+		else 
+			System.out.println("estado nao encontrado!!");
+	}
+	public void imprimeTransicaoPorEstado(Tinfo item) {
+		Tnodo pesquisa = pesquisaElementoById(item.id);
+		TnodoTransicao aux =  pesquisa.item.transicoes.primeiro.proximo;
+		if(aux==null)
+			msgVazia();
+		else {
+			while(aux!=null) {
+				System.out.println(aux.item.toString());
+				aux = aux.proximo;
+			}
+		}
+	}
+
+
 }

@@ -10,7 +10,7 @@ public class TPilha {
 	public void Cria() {
 		TinfoPilha item =  new TinfoPilha("");
 		this.primeiro =  new TnodoPilha(item.simbolo);
-		this.primeiro = this.ultimo;
+		this.ultimo = this.primeiro;
 	}
 	public void push(String simbolo){
 		TnodoPilha aux =  this.primeiro.proximo;
@@ -19,7 +19,6 @@ public class TPilha {
 		this.primeiro.proximo=novo;
 		if(aux==null)
 			this.ultimo=aux;
-		this.primeiro.item.id++;
 	}
 	public void pop(){
 		
@@ -33,14 +32,14 @@ public class TPilha {
 				this.ultimo=this.primeiro;
 		}
 	}
-	public TnodoPilha Topo() {
+	public String Topo() {
 		TnodoPilha primeiroElemento =  this.primeiro.proximo;
 		if(isVazia()) {
 			msgVazia();
-			return this.primeiro;
+			return this.primeiro.item.simbolo;
 		}
 		else {
-			return primeiroElemento;
+			return primeiroElemento.item.simbolo;
 		}
 		
 		
