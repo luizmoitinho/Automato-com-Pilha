@@ -26,7 +26,7 @@ public class TPilha {
 			msgVazia();
 		else {
 			TnodoPilha aux = this.primeiro.proximo;
-			System.out.println("elemento removido: "+ aux.item.id);
+			System.out.println("elemento removido: "+ aux.item.simbolo);
 			this.primeiro.proximo = aux.proximo;
 			if(this.primeiro.proximo==null)
 				this.ultimo=this.primeiro;
@@ -58,7 +58,7 @@ public class TPilha {
 		else {
 			TnodoPilha aux = this.primeiro.proximo;
 			while(aux!=null) {
-				System.out.println(aux.item.toString());
+				System.out.println(aux.item.simbolo);
 				System.out.println("________________________");
 				aux=aux.proximo;
 			}

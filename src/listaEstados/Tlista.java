@@ -7,10 +7,11 @@ public class Tlista extends TlistaTransicao {
 	protected TPilha pilha =  new TPilha();
 	
 	public Tlista() {
-		Cria();
+		CriaListaEstado();
 		
 	}
-	public void Cria() { 
+	
+	public void CriaListaEstado() { 
 		Tinfo item = new Tinfo("",0,false,false);
 		this.primeiro =  new Tnodo(item);
 		this.ultimo = this.primeiro;
@@ -36,9 +37,8 @@ public class Tlista extends TlistaTransicao {
 				pesquisa.item.inicial=false;
 			
 		}
-		insereFim(item);System.out.println(item.inicial);
+		insereFim(item);
 	}
-	
 	public void insereInicio(Tinfo item) {
 		Tnodo aux =  this.primeiro.proximo;
 		Tnodo novo =  new Tnodo(item);
@@ -67,27 +67,45 @@ public class Tlista extends TlistaTransicao {
 		}
 	}
 	
-//	public boolean verificaPalavra(String p) {
-//		String [] palavra =  new String[p.length()];
-//		Tnodo estado = verificaEstadoInicial();
-//		if(estado!=null) {
-//			for(int i=0;i<palavra.length;i++){
-//				if() {
-//					
-//				}
-//				
-//				
-//				
-//			}
-//			
-//			
-//			return true;
-//		}
-//		else 
-//			System.out.println("Nao existe um estado inicial!");
-//			
-//		return false;
-//	}
+
+
+	
+	public boolean valida(String palavra) {
+		boolean validada = false;
+		Tnodo estado = verificaEstadoInicial();
+		TnodoTransicao transicao =  estado.item.transicoes.primeiro.proximo;
+		TPilha pilha =  new TPilha();
+		validaPalavra(estado, transicao,palavra, 0, palavra.length(),validada,pilha);
+		return validada;
+		
+	}
+	public void  validaPalavra(Tnodo estado, TnodoTransicao transicao,String palavra ,int i,int j, boolean validada, TPilha pilha) {
+		//System.out.println("\n Entrei : \n"+transicao.item.toString()+" \n ");
+		TPilha novaPilha = new TPilha();
+		novaPilha =  pilha;
+		pilha.imprime();
+		if(transicao!=null && estado!=null && i<j) {
+			//validaPalavra(estado, transicao.proximo,palavra,i,j,validada,pilha);
+			System.out.println("\n"+ transicao.item.toString()+"\n");
+			if(transicao.item.getComSimbolo().equals(Character.toString(palavra.charAt(i))) ) {
+				if(transicao.item.getLendoPilha().equals(pilha.Topo())) 
+					pilha.pop();
+				if(!transicao.item.getInserindoPilha().equals(""))
+					pilha.push(transicao.item.getInserindoPilha());		
+				i++;
+				estado = pesquisaElementoById(transicao.item.getPara());
+				transicao = estado.item.transicoes.primeiro.proximo;
+
+				validaPalavra(estado,transicao,palavra,i,j,validada,novaPilha);
+				if(estado.item.aceitacao || novaPilha.isVazia())
+					System.out.println("Palavra aceita!");
+			
+			}
+		}	
+		
+	}
+
+		
 	public Tnodo verificaEstadoInicial() {
 		Tnodo aux =  this.primeiro.proximo;
 		while(aux!=null) {
@@ -104,9 +122,11 @@ public class Tlista extends TlistaTransicao {
 		if(isVazia()) 
 			msgVazia();	
 		else 
-			while(aux!=null)
+			while(aux!=null) {
 				if(aux.item.id==id)
 					break;
+				aux = aux.proximo;
+			}
 		return aux;
 	}
 	
@@ -157,19 +177,12 @@ public class Tlista extends TlistaTransicao {
 	
 	public void insereTransicao(TinfoTransicao transicao) {
 		Tnodo aux = pesquisaElementoById(transicao.getDe());
+		aux.item.toString();
 		if(aux!=null) {
-			
-			if(transicao.getLendoPilha().equals(this.pilha.Topo())) 
-				this.pilha.pop();
-			
-			if(!transicao.getInserindoPilha().equals(""))
-				this.pilha.push(transicao.getComSimbolo());
-			
 			aux.item.transicoes.insereFim(transicao);
-			System.out.println(this.pilha.Topo());
+			aux = aux.proximo;
 		}
-		else 
-			System.out.println("estado nao encontrado!!");
+		
 	}
 	public void imprimeTransicaoPorEstado(Tinfo item) {
 		Tnodo pesquisa = pesquisaElementoById(item.id);
@@ -179,6 +192,7 @@ public class Tlista extends TlistaTransicao {
 		else {
 			while(aux!=null) {
 				System.out.println(aux.item.toString());
+				System.out.println("_____________________");
 				aux = aux.proximo;
 			}
 		}

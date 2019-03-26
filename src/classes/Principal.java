@@ -46,12 +46,10 @@ public class Principal {
 						//tomando por base que tenhamos esse elemento na lista, faço a transição alocando ela do estado que a mesma parte.
 						//suponha que exista dois estados par serem ligados, então nao coloquei nenhuma execeção.
 						transicao.preencheDados(infoTransicao);
-						
 						AP.insereTransicao(infoTransicao);
 						break;
 					case 5:
-						
-						
+					
 						break;
 					case 6:
 					
@@ -62,12 +60,21 @@ public class Principal {
 						break;
 						
 					case 7:
-						//testar palavra
+						input.nextLine();
+						String palavra;
+						System.out.println("\tTESTAR PALAVRAS");
+						System.out.print("\tDigite a palavra: ");
+						palavra = input.nextLine();
+						if(AP.valida(palavra))
+							System.out.println("Palavra aceita!");
+						else
+							System.out.println("Palavra não foi aceita!");
+						break;
 					case 8:
 						System.out.println("programa finalizado");
 						break;	
 				}
-		}while(op!=6);	
+		}while(op!=8);	
 	 
 			
 	}
@@ -77,12 +84,12 @@ public class Principal {
 		System.out.println("\t[2] - REMOVER ESTADO");
 		System.out.println("\t[3] - IMPRIMIR ESTADOS");
 		
-		System.out.println("-----------------------------");
+		System.out.println("\t-----------------------------");
 		System.out.println("\t[4] - ADICIONAR TRANSIÇÃO");
 		//System.out.println("\t[5] - REMOVER TRANSICAO");
 		System.out.println("\t[6] - IMPRIMIR TRANSIÇÕES");
 		
-		System.out.println("-----------------------------");
+		System.out.println("\t-----------------------------");
 		System.out.println("\t[7] - TESTAR PALAVRA");
 		System.out.println("\t[8] - SAIR");
 		System.out.print("\t>> Opção : ");

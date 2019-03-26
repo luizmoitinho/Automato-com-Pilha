@@ -10,7 +10,7 @@ public class TlistaTransicao {
 	public TnodoTransicao ultimo;
 	public TPilha pilha =  new TPilha();
 	public TlistaTransicao() {
-		Cria();
+		CriaListaTransicao();
 	}
 	public void preencheDados(TinfoTransicao infoTransicao) {
 		
@@ -29,7 +29,7 @@ public class TlistaTransicao {
 		infoTransicao.setInserindoPilha(input.nextLine());
 		
 	}
-	public void Cria() {
+	public void CriaListaTransicao() {
 		TinfoTransicao item =  new TinfoTransicao();
 		this.primeiro= new TnodoTransicao(item);
 		this.ultimo = this.primeiro;
@@ -57,7 +57,8 @@ public class TlistaTransicao {
 		if(p1.proximo==null)
 			this.ultimo=p1;
 	}
-	
+
+
 	public boolean isTransicaoVazia() {
 		return this.primeiro==this.ultimo?true:false;
 	}

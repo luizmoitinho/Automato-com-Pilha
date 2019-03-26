@@ -7,6 +7,7 @@ public class Tinfo {
 	 public String nome;
 	 public boolean inicial,aceitacao;	 
 	 public TlistaTransicao transicoes =  new TlistaTransicao();
+
 	 
 	public Tinfo() {}
 	public Tinfo(String nome, int id, boolean inicial, boolean aceitacao) {
@@ -21,7 +22,7 @@ public class Tinfo {
 		return "\tNome   : "+this.nome+
 			 "\n\tId     : "+this.id+
 			 "\n\tInicial: "+this.inicial+
-			 "\n\tFianl  : "+this.aceitacao;
+			 "\n\tFinal  : "+this.aceitacao;
 
 	}
 	public int getId() {
